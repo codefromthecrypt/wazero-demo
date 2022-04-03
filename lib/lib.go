@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/tetratelabs/wazero"
+	"github.com/tetratelabs/wazero/wasi"
 )
 
 //go:embed sum.wasm
@@ -27,13 +28,13 @@ func Start() {
 	// WASI command (to initialize memory).
 	// This is required by TinyGo even if the source (../sum/sum.go in this
 	// case) doesn't directly use I/O or memory.
-	wasi, err := runtime.InstantiateModule(wazero.WASISnapshotPreview1())
+	wm, err := wasi.InstantiateSnapshotPreview1(runtime)
 	if err != nil {
 		log.Panicln(err)
 	}
-	defer wasi.Close()
+	defer wm.Close()
 
-	module, err := wazero.StartWASICommandFromSource(runtime, sumWASMBytes)
+	module, err := runtime.InstantiateModuleFromCode(sumWASMBytes)
 	if err != nil {
 		log.Panicln(err)
 	}
