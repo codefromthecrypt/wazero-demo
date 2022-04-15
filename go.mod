@@ -3,12 +3,11 @@ module github.com/birros/wazero-demo
 go 1.17
 
 require (
-	github.com/tetratelabs/wazero v0.0.0-20220401224236-2664b1eb62a2
+	github.com/tetratelabs/wazero v0.0.0-20220415013152-106f96b066b4
 	golang.org/x/mobile v0.0.0-20220307220422-55113b94f09c
 )
 
 require (
-	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
 	golang.org/x/tools v0.1.8-0.20211022200916-316ba0b74098 // indirect
