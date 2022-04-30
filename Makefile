@@ -22,3 +22,4 @@ lib/sum.wasm: ${LIB_FILES}
 .PHONY: clean
 clean:
 	rm -rf build
+	find . -type f -name "*.wasm" -exec rm -f {} \;
