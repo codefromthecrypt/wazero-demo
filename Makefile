@@ -1,3 +1,5 @@
+export GOROOT=$(shell go env GOROOT)
+
 all: run
 
 GO_FILES = go.mod go.sum $(shell find . -type f -name '*.go')
@@ -17,7 +19,7 @@ build/android/arm64/lib.aar: ${GO_FILES} lib/sum.wasm
 	gomobile bind -target android/arm64 -o build/android/arm64/lib.aar github.com/birros/wazero-demo/lib
 
 lib/sum.wasm: ${LIB_FILES}
-	GOROOT=$(shell go env GOROOT) tinygo build -o lib/sum.wasm -target wasm sum/sum.go
+	tinygo build -o lib/sum.wasm -target wasm sum/sum.go
 
 .PHONY: clean
 clean:
