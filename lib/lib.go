@@ -15,34 +15,32 @@ var sumWASMBytes []byte
 func Start() {
 	log.SetFlags(log.Lshortfile)
 
+	// Assign a Go context used during instantiation and any function calls.
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// Assign the Go context to the runtime, so it is used during instantiation
-	// and any function calls.
-	runtime := wazero.NewRuntimeWithConfig(
-		wazero.NewRuntimeConfig().WithContext(ctx),
-	)
+	// Create a new WebAssembly Runtime.
+	runtime := wazero.NewRuntime()
 
 	// sum.wasm was compiled with TinyGo, which requires being instantiated as a
 	// WASI command (to initialize memory).
 	// This is required by TinyGo even if the source (../sum/sum.go in this
 	// case) doesn't directly use I/O or memory.
-	wm, err := wasi.InstantiateSnapshotPreview1(runtime)
+	wm, err := wasi.InstantiateSnapshotPreview1(ctx, runtime)
 	if err != nil {
 		log.Panicln(err)
 	}
-	defer wm.Close()
+	defer wm.Close(ctx)
 
-	module, err := runtime.InstantiateModuleFromCode(sumWASMBytes)
+	module, err := runtime.InstantiateModuleFromCode(ctx, sumWASMBytes)
 	if err != nil {
 		log.Panicln(err)
 	}
-	defer module.Close()
+	defer module.Close(ctx)
 
 	sum := module.ExportedFunction("sum")
 
-	result, err := sum.Call(nil, 30, 12)
+	result, err := sum.Call(ctx, 30, 12)
 	if err != nil {
 		log.Panicln(err)
 	}
