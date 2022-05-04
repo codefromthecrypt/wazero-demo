@@ -19,7 +19,7 @@ build/android/arm64/lib.aar: ${GO_FILES} lib/sum.wasm
 	gomobile bind -target android/arm64 -o build/android/arm64/lib.aar github.com/birros/wazero-demo/lib
 
 lib/sum.wasm: ${LIB_FILES}
-	tinygo build -o lib/sum.wasm -target wasm sum/sum.go
+	tinygo build -o lib/sum.wasm -scheduler=none --no-debug --target=wasi sum/sum.go
 
 .PHONY: clean
 clean:
