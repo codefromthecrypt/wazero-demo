@@ -21,22 +21,20 @@ func Start() {
 
 	// Create a new WebAssembly Runtime.
 	runtime := wazero.NewRuntime()
+	defer runtime.Close(ctx) // This closes everything this Runtime created.
 
 	// sum.wasm was compiled with TinyGo, which requires being instantiated as a
 	// WASI command (to initialize memory).
 	// This is required by TinyGo even if the source (../sum/sum.go in this
 	// case) doesn't directly use I/O or memory.
-	wm, err := wasi.InstantiateSnapshotPreview1(ctx, runtime)
-	if err != nil {
+	if _, err := wasi.InstantiateSnapshotPreview1(ctx, runtime); err != nil {
 		log.Panicln(err)
 	}
-	defer wm.Close(ctx)
 
 	module, err := runtime.InstantiateModuleFromCode(ctx, sumWASMBytes)
 	if err != nil {
 		log.Panicln(err)
 	}
-	defer module.Close(ctx)
 
 	sum := module.ExportedFunction("sum")
 
