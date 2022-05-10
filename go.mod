@@ -3,7 +3,7 @@ module github.com/birros/wazero-demo
 go 1.17
 
 require (
-	github.com/tetratelabs/wazero v0.0.0-20220503023851-72f16d21eb4a
+	github.com/tetratelabs/wazero v0.0.0-20220510030018-8dd797e108db
 	golang.org/x/mobile v0.0.0-20220307220422-55113b94f09c
 )
 
