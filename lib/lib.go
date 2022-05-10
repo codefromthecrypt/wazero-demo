@@ -21,7 +21,7 @@ func Start() {
 
 	// Create a new WebAssembly Runtime.
 	runtime := wazero.NewRuntime()
-	defer runtime.Close(ctx) // This closes everything made in the same Runtime.
+	defer runtime.Close(ctx) // This closes everything this Runtime created.
 
 	// sum.wasm was compiled with TinyGo, which requires being instantiated as a
 	// WASI command (to initialize memory).
