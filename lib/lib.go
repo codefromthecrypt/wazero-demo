@@ -20,11 +20,7 @@ func Start() {
 	defer cancel()
 
 	// Create a new WebAssembly Runtime.
-	runtime := wazero.NewRuntimeWithConfig(
-		ctx,
-		// WebAssembly 2.0 allows use of any version of TinyGo, including 0.24+.
-		wazero.NewRuntimeConfig().WithWasmCore2(),
-	)
+	runtime := wazero.NewRuntime(ctx)
 	defer runtime.Close(ctx) // This closes everything this Runtime created.
 
 	// sum.wasm was compiled with TinyGo, which requires being instantiated as a
